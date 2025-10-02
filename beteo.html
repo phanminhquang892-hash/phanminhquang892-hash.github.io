@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Trái tim lấp lánh</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      background: #000;
+      overflow: hidden;
+    }
+    canvas {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+    .center-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: rgb(255, 255, 255);
+      font-size: 34px;
+      font-weight: bold;
+      font-style: italic;
+      text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff33ff, 0 0 30px #ff66ff;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+  <!-- Trái tim to chính -->
+  <canvas id="pinkboard"></canvas>
+  <!-- Chữ ở giữa trái tim -->
+  <div class="center-text">Nguyễn Thị Minh Tuệ</div>
+  <!-- Trái tim nhỏ bay -->
+  <canvas id="floating-hearts"></canvas>
+
+  <script>
+  /*
+   * Trái tim to ở giữa
+   */
+  var settings = {
+    particles: { length: 500, duration: 2, velocity: 100, effect: -0.75, size: 30 }
+  };
+
+  var Point = function(x, y) {
+    this.x = x || 0; this.y = y || 0;
+  };
+  Point.prototype.clone = function() { return new Point(this.x, this.y); };
+  Point.prototype.length = function(length) {
+    if (length === undefined) return Math.sqrt(this.x * this.x + this.y * this.y);
+    this.normalize();
+    this.x *= length; this.y *= length; return this;
+  };
+  Point.prototype.normalize = function() {
+    var length = this.length(); this.x /= length; this.y /= length; return this;
+  };
+
+  var Particle = function() { this.position=new Point(); this.velocity=new Point(); this.acceleration=new Point(); this.age=0; };
+  Particle.prototype.initialize = function(x,y,dx,dy) {
+    this.position.x=x; this.position.y=y; this.velocity.x=dx; this.velocity.y=dy;
+    this.acceleration.x=dx*settings.particles.effect; this.acceleration.y=dy*settings.particles.effect; this.age=0;
+  };
+  Particle.prototype.update = function(deltaTime) {
+    this.position.x+=this.velocity.x*deltaTime; this.position.y+=this.velocity.y*deltaTime;
+    this.velocity.x+=this.acceleration.x*deltaTime; this.velocity.y+=this.acceleration.y*deltaTime;
+    this.age+=deltaTime;
+  };
+  Particle.prototype.draw = function(context,image) {
+    function ease(t){return (--t)*t*t+1;}
+    var size=image.width*ease(this.age/settings.particles.duration);
+    context.globalAlpha=1-this.age/settings.particles.duration;
+    context.drawImage(image,this.position.x-size/2,this.position.y-size/2,size,size);
+  };
+
+  var ParticlePool = function(length) {
+    particles=new Array(length);
+    for (var i=0;i<particles.length;i++) particles[i]=new Particle();
+    firstActive=0; firstFree=0; duration=settings.particles.duration;
+  };
+  var particles,firstActive,firstFree,duration;
+  ParticlePool.prototype.add=function(x,y,dx,dy){
+    particles[firstFree].initialize(x,y,dx,dy);
+    firstFree++; if(firstFree==particles.length) firstFree=0;
+    if(firstActive==firstFree) {firstActive++; if(firstActive==particles.length) firstActive=0;}
+  };
+  ParticlePool.prototype.update=function(deltaTime){
+    if(firstActive<firstFree){for(var i=firstActive;i<firstFree;i++)particles[i].update(deltaTime);}
+    if(firstFree<firstActive){for(var i=firstActive;i<particles.length;i++)particles[i].update(deltaTime);
+    for(var i=0;i<firstFree;i++)particles[i].update(deltaTime);}
+    while(particles[firstActive].age>=duration&&firstActive!=firstFree){firstActive++; if(firstActive==particles.length)firstActive=0;}
+  };
+  ParticlePool.prototype.draw=function(context,image){
+    if(firstActive<firstFree){for(var i=firstActive;i<firstFree;i++)particles[i].draw(context,image);}
+    if(firstFree<firstActive){for(var i=firstActive;i<particles.length;i++)particles[i].draw(context,image);
+    for(var i=0;i<firstFree;i++)particles[i].draw(context,image);}
+  };
+
+  (function(canvas){
+    var context=canvas.getContext('2d'), particles=new ParticlePool(settings.particles.length),
+        particleRate=settings.particles.length/settings.particles.duration, time;
+    function pointOnHeart(t){
+      return new Point(160*Math.pow(Math.sin(t),3),130*Math.cos(t)-50*Math.cos(2*t)-20*Math.cos(3*t)-10*Math.cos(4*t)+25);
+    }
+    var image=(function(){
+      var canvas=document.createElement('canvas'),context=canvas.getContext('2d');
+      canvas.width=settings.particles.size; canvas.height=settings.particles.size;
+      function to(t){
+        var point=pointOnHeart(t);
+        point.x=settings.particles.size/2+point.x*settings.particles.size/350;
+        point.y=settings.particles.size/2-point.y*settings.particles.size/350; return point;
+      }
+      context.beginPath(); var t=-Math.PI,point=to(t); context.moveTo(point.x,point.y);
+      while(t<Math.PI){t+=0.01; point=to(t); context.lineTo(point.x,point.y);} context.closePath();
+      context.fillStyle='#ea80b0'; context.fill();
+      var image=new Image(); image.src=canvas.toDataURL(); return image;
+    })();
+    function render(){
+      requestAnimationFrame(render);
+      var newTime=new Date().getTime()/1000, deltaTime=newTime-(time||newTime); time=newTime;
+      context.clearRect(0,0,canvas.width,canvas.height);
+      var amount=particleRate*deltaTime;
+      for(var i=0;i<amount;i++){
+        var pos=pointOnHeart(Math.PI-2*Math.PI*Math.random());
+        var dir=pos.clone().length(settings.particles.velocity);
+        particles.add(canvas.width/2+pos.x,canvas.height/2-pos.y,dir.x,-dir.y);
+      }
+      particles.update(deltaTime); particles.draw(context,image);
+    }
+    function onResize(){canvas.width=canvas.clientWidth; canvas.height=canvas.clientHeight;}
+    window.onresize=onResize; setTimeout(function(){onResize(); render();},10);
+  })(document.getElementById('pinkboard'));
+
+
+  /*
+   * Trái tim nhỏ bay đầy màn hình
+   */
+  const canvas2 = document.getElementById("floating-hearts");
+  const ctx = canvas2.getContext("2d");
+  let hearts = [];
+  function resize(){canvas2.width=window.innerWidth; canvas2.height=window.innerHeight;}
+  window.addEventListener("resize",resize); resize();
+
+  function randomColor(){
+    const colors=["#ff69b4","#ff1493","#ff0000","#ff7f50","#ffa500","#00ffff","#ff00ff"];
+    return colors[Math.floor(Math.random()*colors.length)];
+  }
+
+  function createHeart(){
+    return {
+      x: Math.random()*canvas2.width,
+      y: canvas2.height+20,
+      size: Math.random()*12+8,
+      speed: Math.random()*1.5+0.5,
+      color: randomColor(),
+      alpha: Math.random()*0.5+0.5
+    };
+  }
+
+  function drawHeart(h){
+    ctx.save();
+    ctx.translate(h.x,h.y);
+    ctx.scale(h.size/20,h.size/20);
+    ctx.beginPath();
+    ctx.moveTo(0,0);
+    ctx.bezierCurveTo(0,-3,-5,-3,-5,0);
+    ctx.bezierCurveTo(-5,3,0,6,0,10);
+    ctx.bezierCurveTo(0,6,5,3,5,0);
+    ctx.bezierCurveTo(5,-3,0,-3,0,0);
+    ctx.fillStyle=h.color;
+    ctx.globalAlpha=h.alpha;
+    ctx.shadowColor=h.color;
+    ctx.shadowBlur=15;
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function animate(){
+    ctx.clearRect(0,0,canvas2.width,canvas2.height);
+    if(hearts.length<100) hearts.push(createHeart());
+    for(let i=0;i<hearts.length;i++){
+      let h=hearts[i];
+      h.y-=h.speed;
+      drawHeart(h);
+      if(h.y<-10) hearts[i]=createHeart();
+    }
+    requestAnimationFrame(animate);
+  }
+  animate();
+  </script>
+</body>
+</html>
