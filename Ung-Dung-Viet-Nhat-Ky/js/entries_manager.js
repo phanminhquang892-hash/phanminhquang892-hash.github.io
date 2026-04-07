@@ -136,31 +136,27 @@ document.addEventListener("DOMContentLoaded", async () => {
     };
 
     // thêm danh mục
-    btn.onclick = async () => {
-        error.innerText = "";
-        let name = input.value.trim();
+   btn.onclick = async () => {
+    error.innerText = "";
+    let name = input.value.trim();
+    if (!name) return (error.innerText = "Không được để trống!");
+    
+    // Kiểm tra trùng lặp trên mảng hiện tại
+    if (categories.find(c => c.name.toLowerCase() === name.toLowerCase())) {
+        return (error.innerText = "Category đã tồn tại!");
+    }
 
-        if (!name) {
-            error.innerText = "Không được để trống!";
-            return;
-        }
-
-        let exist = categories.find(c => c.name.toLowerCase() === name.toLowerCase());
-
-        if (exist) {
-            error.innerText = "Category đã tồn tại!";
-            return;
-        }
-
-        try {
-            const docRef = await addDoc(collection(db, "categories"), { name });
-            categories.push({ id: docRef.id, name });
-            input.value = "";
-            render();
-        } catch (e) {
-            alert("Lỗi khi thêm");
-        }
-    };
+    try {
+        // Gửi dữ liệu lên Firestore
+        const docRef = await addDoc(collection(db, "categories"), { name });
+        categories.push({ id: docRef.id, name });
+        input.value = "";
+        render();
+    } catch (err) { 
+        console.error("Lỗi Firestore:", err);
+        alert("Lỗi khi thêm: " + err.message); 
+    }
+};
 
     // xóa danh mục
     window.deleteCategory = async (id) => {
