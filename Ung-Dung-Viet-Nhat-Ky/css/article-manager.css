@@ -481,3 +481,33 @@ body {
     max-width: calc(100% - 20px);
   }
 }
+/* --- XỬ LÝ BẢNG CHO ĐIỆN THOẠI BẰNG VUỐT NGANG --- */
+  .table-card {
+    width: 100% !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important; /* Bắt buộc để vuốt mượt trên iPhone */
+  }
+
+  .table-responsive {
+    width: 100% !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    margin-bottom: 15px !important;
+  }
+
+  .article-table {
+    width: 100% !important;
+    min-width: 850px !important; /* Kéo giãn bảng ra để ép thanh cuộn xuất hiện */
+  }
+
+  .article-table th,
+  .article-table td {
+    white-space: nowrap !important; /* Không cho rớt dòng */
+  }
+
+  #articleTable img.thumb {
+    width: 60px !important;
+    height: 60px !important;
+    object-fit: cover !important;
+    border-radius: 4px !important;
+  }
