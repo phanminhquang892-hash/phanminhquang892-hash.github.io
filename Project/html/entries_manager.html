@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Entries Manager</title>
+    <link rel="stylesheet" href="../css/user_manager.css" />
+    <link rel="stylesheet" href="../css/entries_manager.css" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<!-- MODAL -->
+<div id="customModal" class="modal-overlay">
+    <div class="modal-box">
+        <h3 id="modalTitle">Thông báo</h3>
+        <p id="modalMessage">Nội dung</p>
+
+        <input id="modalInput" type="text" class="modal-input" />
+
+        <div class="modal-actions">
+            <button id="modalCancel" type="button" class="modal-btn cancel-btn">Hủy</button>
+            <button id="modalOk" type="button" class="modal-btn ok-btn">Đồng ý</button>
+        </div>
+    </div>
+</div>
+
+<body>
+    <div class="page">
+        <header class="topbar">
+            <div class="topbar-right">
+                <div class="topbar-icon mail">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 6h16v12H4z" />
+                        <path d="m4 7 8 6 8-6" />
+                    </svg>
+                    <span class="badge">2</span>
+                </div>
+
+                <div class="topbar-icon bell">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M15 17H9" />
+                        <path d="M18 16V11a6 6 0 1 0-12 0v5l-2 2h16z" />
+                        <path d="M10 19a2 2 0 0 0 4 0" />
+                    </svg>
+                </div>
+
+                <img class="topbar-avatar" src="../img/Ellipse 6.png" alt="Admin avatar" />
+            </div>
+        </header>
+
+        <div class="layout">
+            <aside class="sidebar">
+                <a href="../html/user_manager.html" class="menu-item ">
+                    <span class="menu-icon">
+                        <img src="../img/Users_Group.png" alt="">
+                    </span>
+                    <span>Manage Users</span>
+                </a>
+
+                <a href="../html/entries_manager.html" class="menu-item active">
+                    <span class="menu-icon">
+                        <img src="../img/Book.png" alt="">
+                    </span>
+                    <span>Manage Entries</span>
+                </a>
+
+                <a href="../html/article-manager.html" class="menu-item">
+                    <span class="menu-icon">
+                        <img src="../img/Book_Open.png" alt="">
+                    </span>
+                    <span>Manage Article</span>
+                </a>
+
+                <a href="../html/login.html" class="menu-item logout">
+                    <span class="menu-icon">
+                        <img src="../img/Log_Out.png" alt="">
+                    </span>
+                    <span>Log out</span>
+                </a>
+            </aside>
+
+            <main class="content entries-content">
+                <div class="content-top entries-top">
+                    <div class="search-box entries-search">
+                        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="7"></circle>
+                            <path d="M20 20l-3.5-3.5"></path>
+                        </svg>
+                        <input id="searchCategory" type="text" placeholder="Search Article Categories" />
+                    </div>
+                </div>
+
+                <div class="entries-card">
+                    <h1 class="entries-title">📁 Manage Categories</h1>
+
+                    <div class="field-group">
+                        <label for="categoryName" class="field-label">Category Name:</label>
+                        <input id="categoryName" type="text" class="field-input" placeholder="Enter category name" />
+                        <p id="errorCategory" class="error"></p>
+                    </div>
+
+                    <button id="addCategoryBtn" class="add-btn" type="button">Add Category</button>
+                    <div class="list-title">📋 Category List</div>
+
+                    <div class="table-wrap entries-table-wrap">
+                        <table class="entries-table">
+                            <thead>
+                                <tr>
+                                    <th class="col-stt">#</th>
+                                    <th>Category Name</th>
+                                    <th class="col-actions">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="categoryTable">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <script src="../js/check-admin.js"></script>
+    <script src="../js/entries_manager.js"></script>
+</body>
+
+</html>
