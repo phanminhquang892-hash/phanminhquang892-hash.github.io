@@ -587,3 +587,133 @@ body {
     gap: 15px;
   }
 }
+
+/* ===== RESPONSIVE CHO TABLET & MOBILE ===== */
+@media (max-width: 768px) {
+  .layout {
+    flex-direction: column;
+  }
+
+  /* Sidebar thành thanh cuộn ngang */
+  .sidebar {
+    width: 100%;
+    padding: 15px 15px 5px 15px;
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+    gap: 12px;
+    border-bottom: 1px solid #ddd;
+    scrollbar-width: none; 
+  }
+  .sidebar::-webkit-scrollbar { display: none; }
+
+  .menu-item {
+    width: auto;
+    min-width: max-content; /* Fix lỗi chữ và viền bị cắt */
+    height: 40px;
+    margin-bottom: 0;
+    padding: 0 16px;
+  }
+
+  .content {
+    padding: 15px;
+  }
+
+  .article-header {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .article-header h1 {
+    font-size: 24px;
+    order: -1; /* Đưa tiêu đề lên trên nút bấm */
+  }
+
+  .add-btn {
+    position: static;
+    transform: none;
+    width: 100%;
+    text-align: center;
+  }
+
+  /* Chuyển Bảng (Table) thành dạng Thẻ (Card) */
+  .table-card {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+  }
+
+  .article-table thead { display: none !important; }
+  .article-table, .article-table tbody, .article-table tr, .article-table td { 
+    display: block; 
+    width: 100%; 
+  }
+  
+  .article-table tr {
+    margin-bottom: 20px; /* Tạo khoảng cách giữa các bài viết */
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 16px;
+    background: #fff;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  }
+  
+  .article-table td {
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+    text-align: left;
+  }
+  
+  .article-table td:first-child {
+    padding-top: 0;
+  }
+
+  .article-table td:last-child { 
+    border-bottom: none; 
+    padding-bottom: 0;
+  }
+
+  /* Fix ảnh hiển thị trên mobile */
+  .thumb {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 8px;
+    display: block;
+  }
+
+  .actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 5px;
+  }
+  
+  .btn {
+    flex: 1; /* Nút sửa/xóa chia đều 2 bên */
+    text-align: center;
+  }
+
+  .pagination {
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+  }
+}
+
+@media (max-width: 576px) {
+  .article-header h1 {
+    font-size: 20px;
+  }
+  
+  .thumb {
+    height: 150px;
+  }
+
+  .modal-box {
+    width: 90%;
+    max-width: 350px;
+  }
+}
