@@ -1,4 +1,8 @@
-document.addEventListener("DOMContentLoaded", () => {
+import { db } from "./firebase-config.js";
+import { collection, getDocs, addDoc, doc, getDoc, updateDoc } 
+from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
+
+document.addEventListener("DOMContentLoaded", async () => {
   // lấy các phần tử dom
   const titleInput = document.getElementById("title");
   const categorySelect = document.getElementById("category");
@@ -7,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const statusRadios = document.querySelectorAll("input[name='status']");
   const btn = document.querySelector(".add-btn");
   const formTitle = document.querySelector(".form-title");
-  const closeBtn = document.querySelector(".close-btn"); 
+  const closeBtn = document.querySelector(".close-btn"); // nút x
 
   const errorTitle = document.getElementById("errorTitle");
   const errorContent = document.getElementById("errorContent");
@@ -19,7 +23,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // lưu vết trang trước để nút "x" biết đường về
   const currentRef = document.referrer;
   
-  // nếu có trang trước đó và trang đó không phải chính là trang add-new-article (tránh bị kẹt vòng lặp khi f5)
   if (currentRef && !currentRef.includes("add-new-article.html")) {
       sessionStorage.setItem("returnUrl", currentRef);
   }
@@ -54,52 +57,74 @@ document.addEventListener("DOMContentLoaded", () => {
     return user || admin;
   };
 
+  const currentUser = getCurrentUser();
+
+  // hàm tải và hiển thị danh mục TỪ FIREBASE
+  const loadCategories = async () => {
+    try {
+        const querySnapshot = await getDocs(collection(db, "categories"));
+        categorySelect.innerHTML = `<option value="">-- chọn danh mục --</option>`;
+        querySnapshot.forEach((doc) => {
+            const option = document.createElement("option");
+            option.value = doc.data().name;
+            option.textContent = doc.data().name;
+            categorySelect.appendChild(option);
+        });
+    } catch (error) {
+        console.error("Lỗi tải danh mục:", error);
+    }
+  };
+
+  await loadCategories();
+
   // kiểm tra chế độ sửa bài viết
   const urlParams = new URLSearchParams(window.location.search);
-  const editId = urlParams.get('editId');
-  let articles = JSON.parse(localStorage.getItem("articles")) || [];
+  const editId = urlParams.get('editId'); // Firebase dùng string ID
   let articleToEdit = null;
 
   if (editId) {
-    articleToEdit = articles.find(a => a.id === Number(editId));
-    
-    if (articleToEdit) {
-      // đổi tiêu đề và nút thành cập nhật
-      formTitle.innerText = "📝 Edit Article";
-      btn.innerText = "Update";
-      
-      // điền sẵn dữ liệu cũ
-      titleInput.value = articleToEdit.title;
-      contentInput.value = articleToEdit.content;
-      
-      statusRadios.forEach((r) => {
-        if (r.value.toLowerCase() === articleToEdit.status.toLowerCase()) {
-          r.checked = true;
-        }
-      });
+    try {
+      const docSnap = await getDoc(doc(db, "articles", editId));
+      if (docSnap.exists()) {
+        articleToEdit = docSnap.data();
+        
+        // đổi tiêu đề và nút thành cập nhật
+        formTitle.innerText = "📝 Edit Article";
+        btn.innerText = "Update";
+        
+        // điền sẵn dữ liệu cũ
+        titleInput.value = articleToEdit.title;
+        contentInput.value = articleToEdit.content;
+        categorySelect.value = articleToEdit.category;
+        
+        statusRadios.forEach((r) => {
+          if (r.value.toLowerCase() === articleToEdit.status.toLowerCase()) {
+            r.checked = true;
+          }
+        });
 
-      if (articleToEdit.image && articleToEdit.image !== "../img/default.png") {
-        imageData = articleToEdit.image;
-        fileName.innerText = "đã có ảnh minh họa";
-        const uploadIcon = document.querySelector(".upload-icon");
-        const uploadText = document.querySelector(".upload-text");
-        if (uploadIcon) uploadIcon.style.display = "none";
-        if (uploadText) uploadText.style.display = "none";
+        if (articleToEdit.image && articleToEdit.image !== "../img/default.png") {
+          imageData = articleToEdit.image;
+          fileName.innerText = "đã có ảnh minh họa";
+          const uploadIcon = document.querySelector(".upload-icon");
+          const uploadText = document.querySelector(".upload-text");
+          if (uploadIcon) uploadIcon.style.display = "none";
+          if (uploadText) uploadText.style.display = "none";
+        }
       }
+    } catch (error) {
+      console.error("Lỗi lấy dữ liệu bài viết cũ:", error);
     }
   }
 
-  // sự kiện khi bấm nút x 
+  // sự kiện khi bấm nút x (đóng)
   if (closeBtn) {
     closeBtn.onclick = () => {
       const returnUrl = sessionStorage.getItem("returnUrl");
       
-      // ưu tiên trả về chính xác trang vừa rời đi 
       if (returnUrl) {
           window.location.href = returnUrl;
       } else {
-          // backup dự phòng: nếu không có lịch sử , thì check role
-          const currentUser = getCurrentUser();
           const role = currentUser?.role?.toLowerCase();
           if (role === "admin") {
             window.location.href = "../html/article-manager.html";
@@ -114,25 +139,6 @@ document.addEventListener("DOMContentLoaded", () => {
   uploadBox.onclick = () => {
     fileInput.click();
   };
-
-  // hàm tải và hiển thị danh mục
-  const loadCategories = () => {
-    const categories = JSON.parse(localStorage.getItem("categories")) || [];
-    categorySelect.innerHTML = `<option value="">-- chọn danh mục --</option>`;
-
-    categories.forEach((c) => {
-      const option = document.createElement("option");
-      option.value = c.name;
-      option.textContent = c.name;
-      categorySelect.appendChild(option);
-    });
-
-    if (articleToEdit) {
-      categorySelect.value = articleToEdit.category;
-    }
-  };
-
-  loadCategories();
 
   // xử lý hiển thị tên file khi đã chọn ảnh
   fileInput.addEventListener("change", (e) => {
@@ -164,10 +170,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 2000);
   };
 
-  // xử lý sự kiện lưu bài viết (thêm mới hoặc cập nhật)
-  btn.onclick = () => {
-    const currentUser = getCurrentUser();
-
+  // xử lý sự kiện lưu bài viết (thêm mới hoặc cập nhật) LÊN FIREBASE
+  btn.onclick = async () => {
     if (!currentUser) {
       alert("bạn chưa đăng nhập!");
       return;
@@ -204,46 +208,50 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!isValid) return;
 
-    if (editId && articleToEdit) {
-      // chế độ cập nhật
-      articleToEdit.title = title;
-      articleToEdit.category = category;
-      articleToEdit.content = content;
-      articleToEdit.status = status;
-      articleToEdit.image = imageData;
-
-      localStorage.setItem("articles", JSON.stringify(articles));
-      showToast("cập nhật bài viết thành công!");
-    } else {
-      // chế độ thêm mới
-      articles.push({
-        id: Date.now(),
-        title,
-        category,
-        content,
-        status,
-        image: imageData,
-        userId: currentUser.id,
-        createdAt: new Date().toISOString()
-      });
-
-      localStorage.setItem("articles", JSON.stringify(articles));
-      showToast("thêm bài viết mới thành công!");
-    }
-
-    // chuyển hướng về trang cũ sau khi lưu
-    setTimeout(() => {
-      const returnUrl = sessionStorage.getItem("returnUrl");
-      if (returnUrl) {
-          window.location.href = returnUrl;
+    try {
+      if (editId && articleToEdit) {
+        // chế độ cập nhật
+        await updateDoc(doc(db, "articles", editId), {
+          title: title,
+          category: category,
+          content: content,
+          status: status,
+          image: imageData
+        });
+        showToast("cập nhật bài viết thành công!");
       } else {
-          const role = currentUser.role?.toLowerCase();
-          if (role === "admin") {
-            window.location.href = "../html/article-manager.html";
-          } else {
-            window.location.href = "../html/homepage.html";
-          }
+        // chế độ thêm mới
+        await addDoc(collection(db, "articles"), {
+          title: title,
+          category: category,
+          content: content,
+          status: status,
+          image: imageData,
+          userId: currentUser.id,
+          createdAt: new Date().toISOString(),
+          role: currentUser.role
+        });
+        showToast("thêm bài viết mới thành công!");
       }
-    }, 2000);
+
+      // chuyển hướng về trang cũ sau khi lưu
+      setTimeout(() => {
+        const returnUrl = sessionStorage.getItem("returnUrl");
+        if (returnUrl) {
+            window.location.href = returnUrl;
+        } else {
+            const role = currentUser.role?.toLowerCase();
+            if (role === "admin") {
+              window.location.href = "../html/article-manager.html";
+            } else {
+              window.location.href = "../html/homepage.html";
+            }
+        }
+      }, 1500);
+
+    } catch (error) {
+      console.error("Lỗi lưu bài:", error);
+      alert("Có lỗi xảy ra khi lưu lên server");
+    }
   };
 });
