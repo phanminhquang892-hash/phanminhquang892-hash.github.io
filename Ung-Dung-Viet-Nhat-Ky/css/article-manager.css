@@ -15,11 +15,10 @@ body {
 .app {
   width: 100%;
   min-height: 100vh;
-  /* margin: 12px; */
   background: #FAFAFB;
 }
 
-/*  TOPBAR  */
+/* TOPBAR  */
 .topbar {
   height: 64px;
   border-bottom: 1px solid #e5e7eb;
@@ -28,8 +27,6 @@ body {
   align-items: center;
   padding: 0 30px;
   background-color: #FFFFFF;
-  /* border-top: 3px solid #000;
-  border-bottom: 1px solid #ddd; */
 }
 
 .topbar-right {
@@ -86,13 +83,13 @@ body {
   border: 1px solid #ddd;
 }
 
-/*  LAYOUT  */
+/* LAYOUT  */
 .layout {
   display: flex;
   min-height: calc(100vh - 64px);
 }
 
-/*  SIDEBAR  */
+/* SIDEBAR  */
 .sidebar {
   width: 240px;
   padding: 70px 0 0 50px;
@@ -106,15 +103,12 @@ body {
   align-items: center;
   gap: 12px;
   padding: 0 14px;
-
   border-radius: 12px;
   background: linear-gradient(180deg, #dff0ff, #cfe6fb);
   color: #2563eb;
   text-decoration: none;
-
   font-size: 14px;
   font-weight: 700;
-
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
   transition: 0.2s;
 }
@@ -123,61 +117,54 @@ body {
   transform: translateY(-2px);
 }
 
-/* ICON SIDEBAR */
 .menu-icon img {
   width: 24px;
   height: 24px;
 }
 
-/* ACTIVE */
 .menu-item.active {
   outline: 2px solid rgba(255, 255, 255, 0.5);
+  border: 2px solid #ff1616;
+  background: linear-gradient(180deg, #e6f0ff, #dbeafe);
 }
 
-/* LOGOUT */
 .menu-item.logout {
   margin-top: 10px;
 }
 
-/*  CONTENT  */
+/* CONTENT  */
 .content {
   flex: 1;
   padding: 40px 60px 50px;
   position: relative;
 }
 
-/*  HEADER*/
+/* HEADER*/
 .article-header {
   position: relative;
   margin-top: 50px;
   margin-bottom: 20px;
 }
 
-/* TITLE */
 .article-header h1 {
   text-align: center;
   font-size: 32px;
   font-weight: 700;
 }
 
-/* BUTTON */
 .add-btn {
   position: absolute;
   left: 0;
   top: 50%;
   transform: translateY(-50%);
-
   background: #65558F;
   color: #fff;
   border: none;
-
   padding: 10px 22px;
   border-radius: 999px;
-
   font-size: 13px;
   font-weight: 700;
   cursor: pointer;
-
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
   transition: 0.2s;
 }
@@ -195,7 +182,6 @@ body {
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
   overflow: hidden;
 }
-
 
 .article-table {
   width: 100%;
@@ -220,15 +206,10 @@ body {
   vertical-align: middle;
 }
 
-
-/* ACTIONS */
-
 .actions {
   align-items: center;
   gap: 10px;
 }
-
-
 
 /* IMAGE */
 .thumb {
@@ -272,7 +253,6 @@ body {
 }
 
 /* BUTTON */
-
 .btn {
   border: none;
   padding: 8px 16px;
@@ -296,7 +276,7 @@ body {
   transform: scale(1.05);
 }
 
-/*  PAGINATION */
+/* PAGINATION */
 .pagination {
   display: flex;
   justify-content: space-between;
@@ -378,147 +358,17 @@ body {
   background: #ccc;
 }
 
-/*  viền lựa chọn  */
-.menu-item.active {
-  border: 2px solid #ff1616;
-  background: linear-gradient(180deg, #e6f0ff, #dbeafe);
-}
 
-
-/* ===== TABLET (<=768px) ===== */
+/* ==============================================
+   ===== RESPONSIVE (TABLET & MOBILE) ===== 
+============================================== */
 @media (max-width: 768px) {
-
-  /* layout dọc */
+  /* Bố cục tổng thể */
   .layout {
     flex-direction: column;
   }
 
-  /* sidebar thành thanh ngang */
-  .sidebar {
-    width: 100%;
-    padding: 10px;
-    display: flex;
-    overflow-x: auto;
-    gap: 10px;
-  }
-
-  .menu-item {
-    min-width: 140px;
-    height: 36px;
-    font-size: 12px;
-  }
-
-  /* content */
-  .content {
-    padding: 20px;
-  }
-
-  /* header */
-  .article-header {
-    margin-top: 20px;
-  }
-
-  .article-header h1 {
-    font-size: 24px;
-  }
-
-  .add-btn {
-    position: static;
-    transform: none;
-    margin-bottom: 10px;
-  }
-
-  /* TABLE -> card */
-  .article-table thead {
-    display: none;
-  }
-
-  .article-table,
-  .article-table tbody,
-  .article-table tr,
-  .article-table td {
-    display: block;
-    width: 100%;
-  }
-
-  .article-table tr {
-    margin-bottom: 12px;
-    border-bottom: 1px solid #eee;
-    padding: 10px;
-  }
-
-  .article-table td {
-    padding: 6px 0;
-    border: none;
-  }
-
-  .thumb {
-    width: 100%;
-    height: 140px;
-  }
-
-  .actions {
-    display: flex;
-    gap: 8px;
-  }
-}
-
-/* ===== MOBILE (<=576px) ===== */
-@media (max-width: 576px) {
-
-  .content {
-    padding: 12px;
-  }
-
-  .article-header h1 {
-    font-size: 20px;
-  }
-
-  .add-btn {
-    width: 100%;
-    text-align: center;
-  }
-
-  /* text nhỏ lại */
-  .article-table td {
-    font-size: 13px;
-  }
-
-  .thumb {
-    height: 120px;
-  }
-
-  /* button nhỏ lại */
-  .btn {
-    padding: 6px 10px;
-    font-size: 12px;
-  }
-
-  /* pagination */
-  .pagination {
-    flex-direction: column;
-    gap: 10px;
-    align-items: center;
-  }
-
-  .pages {
-    gap: 8px;
-  }
-
-  /* modal */
-  .modal-box {
-    width: 100%;
-    max-width: calc(100% - 20px);
-  }
-}
-
-/* ĐỒNG BỘ RESPONSIVE CHO CÁC TRANG QUẢN TRỊ ADMIN */
-@media (max-width: 768px) {
-  .layout {
-    flex-direction: column;
-  }
-
-  /* Biến Sidebar thành thanh cuộn ngang trên Mobile/Tablet */
+  /* Biến Sidebar thành thanh cuộn ngang */
   .sidebar {
     width: 100%;
     padding: 15px 20px 5px 20px;
@@ -527,7 +377,6 @@ body {
     white-space: nowrap;
     gap: 10px;
     border-bottom: 1px solid #ddd;
-    /* Ẩn thanh cuộn cho đẹp */
     scrollbar-width: none;
   }
 
@@ -547,225 +396,42 @@ body {
     max-width: 100%;
   }
 
-  .content-top {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .search-box {
-    width: 100%;
-    margin-left: 0;
-    margin-top: 10px;
-  }
-
-  /* Biến Bảng thành dạng Thẻ (Card) */
-  table thead {
-    display: none !important;
-  }
-
-  table,
-  table tbody,
-  table tr,
-  table td {
-    display: block;
-    width: 100%;
-  }
-
-  table tr {
-    margin-bottom: 15px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 10px;
-    background: #fff;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-  }
-
-  table td {
-    padding: 8px 0;
-    border-bottom: 1px dashed #eee;
-    text-align: left;
-  }
-
-  table td:last-child {
-    border-bottom: none;
-  }
-
-  .actions-cell,
-  .actions {
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-
-  .pagination {
-    flex-direction: column;
-    gap: 15px;
-  }
-}
-
-/* ===== RESPONSIVE CHO TABLET & MOBILE ===== */
-@media (max-width: 768px) {
-  .layout {
-    flex-direction: column;
-  }
-
-  /* Sidebar thành thanh cuộn ngang */
-  .sidebar {
-    width: 100%;
-    padding: 15px 15px 5px 15px;
-    display: flex;
-    overflow-x: auto;
-    white-space: nowrap;
-    gap: 12px;
-    border-bottom: 1px solid #ddd;
-    scrollbar-width: none;
-  }
-
-  .sidebar::-webkit-scrollbar {
-    display: none;
-  }
-
-  .menu-item {
-    width: auto;
-    min-width: max-content;
-    /* Fix lỗi chữ và viền bị cắt */
-    height: 40px;
-    margin-bottom: 0;
-    padding: 0 16px;
-  }
-
-  .content {
-    padding: 15px;
-  }
-
   .article-header {
-    margin-top: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
+    margin-top: 20px;
   }
 
   .article-header h1 {
     font-size: 24px;
-    order: -1;
-    /* Đưa tiêu đề lên trên nút bấm */
   }
 
   .add-btn {
     position: static;
     transform: none;
-    width: 100%;
-    text-align: center;
+    margin-bottom: 10px;
+    display: inline-block;
   }
 
-  /* Chuyển Bảng (Table) thành dạng Thẻ (Card) */
-  .table-card {
-    background: transparent;
-    border: none;
-    box-shadow: none;
+  /* --- XỬ LÝ BẢNG CHO ĐIỆN THOẠI BẰNG VUỐT NGANG --- */
+  .table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: 15px;
+  }
+
+  .article-table {
+    width: 100%;
+    min-width: 800px; /* Ép bảng rộng ra để tạo thanh cuộn ngang */
   }
 
   .article-table thead {
-    display: none !important;
+    display: table-header-group !important; /* Ghi đè CSS cũ ẩn thead */
   }
 
-  .article-table,
-  .article-table tbody,
-  .article-table tr,
-  .article-table td {
-    display: block;
-    width: 100%;
-  }
-
-  .article-table tr {
-    margin-bottom: 20px;
-    /* Tạo khoảng cách giữa các bài viết */
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
-    padding: 16px;
-    background: #fff;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-  }
-
-  .article-table td {
-    padding: 8px 0;
-    border-bottom: 1px solid #f0f0f0;
-    text-align: left;
-  }
-
-  .article-table td:first-child {
-    padding-top: 0;
-  }
-
-  .article-table td:last-child {
-    border-bottom: none;
-    padding-bottom: 0;
-  }
-
-  /* Fix ảnh hiển thị trên mobile */
-  .thumb {
-    width: 100%;
-    height: 180px;
-    object-fit: cover;
-    border-radius: 8px;
-    display: block;
-  }
-
-  .actions {
-    display: flex;
-    gap: 10px;
-    margin-top: 5px;
-  }
-
-  .btn {
-    flex: 1;
-    /* Nút sửa/xóa chia đều 2 bên */
-    text-align: center;
-  }
-
-  .pagination {
-    flex-direction: column;
-    gap: 15px;
-    align-items: center;
-  }
-}
-
-@media (max-width: 576px) {
-  .article-header h1 {
-    font-size: 20px;
-  }
-
-  .thumb {
-    height: 150px;
-  }
-
-  .modal-box {
-    width: 90%;
-    max-width: 350px;
-  }
-}
-
-/* =========================================
-   CSS XỬ LÝ RESPONSIVE CHO BẢNG TRÊN MOBILE 
-========================================= */
-@media screen and (max-width: 768px) {
-
-  /* 1. Biến bảng thành dạng có thể vuốt ngang */
-  #articleTable,
-  #articleTable pre,
-  /* Nếu bạn có bọc bảng trong container nào đó */
-  table {
-    display: block;
-    width: 100%;
-    overflow-x: auto;
+  #articleTable td {
     white-space: nowrap;
-    /* Tránh chữ bị ép xuống dòng lộn xộn */
-    -webkit-overflow-scrolling: touch;
-    /* Giúp vuốt mượt mà hơn trên iPhone */
   }
 
-  /* 2. Khống chế lại kích thước ảnh minh họa (hiện tại ảnh của bạn đang bị phình to) */
   #articleTable img.thumb {
     width: 60px;
     height: 60px;
@@ -773,21 +439,45 @@ body {
     border-radius: 4px;
   }
 
-  /* 3. Rút ngắn cột nội dung bài viết để tiết kiệm diện tích vuốt */
   #articleTable td.ellipsis {
-    max-width: 120px;
+    max-width: 150px;
     overflow: hidden;
     text-overflow: ellipsis;
   }
+}
 
-  /* 4. Định dạng lại cột chứa nút Sửa/Xóa cho ngay ngắn */
-  #articleTable td.actions {
-    min-width: 120px;
+/* ===== ĐIỆN THOẠI NHỎ (<=576px) ===== */
+@media (max-width: 576px) {
+  .content {
+    padding: 12px;
   }
 
-  #articleTable td.actions .btn {
+  .article-header h1 {
+    font-size: 20px;
+  }
+
+  .add-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .btn {
     padding: 6px 10px;
     font-size: 12px;
-    margin-right: 4px;
+  }
+
+  .pagination {
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .pages {
+    gap: 8px;
+  }
+
+  .modal-box {
+    width: 100%;
+    max-width: calc(100% - 20px);
   }
 }
