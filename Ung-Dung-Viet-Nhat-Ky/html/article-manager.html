@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quản lý bài viết</title>
+    <link rel="stylesheet" href="../css/article-manager.css" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+        rel="stylesheet">
+</head>
+<!-- MODAL -->
+<div id="customModal" class="modal-overlay">
+    <div class="modal-box">
+        <h3 id="modalTitle">Thông báo</h3>
+        <p id="modalMessage">Nội dung</p>
+
+        <input id="modalInput" type="text" class="modal-input" />
+
+        <div class="modal-actions">
+            <button id="modalCancel" type="button" class="modal-btn cancel-btn">Hủy</button>
+            <button id="modalOk" type="button" class="modal-btn ok-btn">Đồng ý</button>
+        </div>
+    </div>
+</div>
+
+<body>
+    <div class="app">
+        <!-- TOPBAR -->
+        <header class="topbar">
+            <div class="topbar-right">
+
+                <div class="topbar-icon mail">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 6h16v12H4z" />
+                        <path d="m4 7 8 6 8-6" />
+                    </svg>
+                    <span class="badge">2</span>
+                </div>
+
+                <div class="topbar-icon bell">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M15 17H9" />
+                        <path d="M18 16V11a6 6 0 1 0-12 0v5l-2 2h16z" />
+                        <path d="M10 19a2 2 0 0 0 4 0" />
+                    </svg>
+                </div>
+
+                <img class="topbar-avatar" src="../img/Ellipse 6.png" alt="Admin avatar" />
+
+            </div>
+        </header>
+
+        <div class="layout">
+            <aside class="sidebar">
+                <a href="../html/user_manager.html" class="menu-item ">
+                    <span class="menu-icon">
+                        <img src="../img/Users_Group.png" alt="">
+                    </span>
+                    <span>Manage Users</span>
+                </a>
+
+                <a href="../html/entries_manager.html" class="menu-item">
+                    <span class="menu-icon">
+                        <img src="../img/Book.png" alt="">
+                    </span>
+                    <span>Manage Entries</span>
+                </a>
+
+                <a href="../html/article-manager.html" class="menu-item active">
+                    <span class="menu-icon">
+                        <img src="../img/Book_Open.png" alt="">
+                    </span>
+                    <span>Manage Article</span>
+                </a>
+
+                <a href="../html/login.html" class="menu-item logout">
+                    <span class="menu-icon">
+                        <img src="../img/Log_Out.png" alt="">
+                    </span>
+                    <span>Log out</span>
+                </a>
+            </aside>
+
+
+            <main class="content">
+                <div class="article-header">
+                    <button id="addArticleBtn" class="add-btn">Thêm mới bài viết</button>
+                    <h1>Quản lý bài viết</h1>
+                </div>
+
+                <section class="table-card">
+                    <table class="article-table">
+                        <thead>
+                            <tr>
+                                <th>Ảnh</th>
+                                <th>Tiêu đề</th>
+                                <th>Chủ đề</th>
+                                <th>Nội dung</th>
+                                <th>Trạng thái</th>
+                                <th>Chỉnh sửa trạng thái</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+
+                        <!-- <tbody> 
+                            <tr>
+                                <td>
+                                    <img class="thumb" src="../img/Bài viết 1.png" alt="post" />
+                                </td>
+                                <td>Học nấu cà sốt cà chua</td>
+                                <td>Nấu ăn</td>
+                                <td class="ellipsis">tôi đã học được cách nấu ăn...</td>
+                                <td><span class="status public">Public</span></td>
+                                <td>
+                                    <select class="status-select">
+                                        <option>Public</option>
+                                        <option>Private</option>
+                                    </select>
+                                </td>
+                                <td class="actions">
+                                    <button class="btn btn-edit">Sửa</button>
+                                    <button class="btn btn-delete">Xóa</button>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <img class="thumb" src="../img/Bài viết 2.png" alt="post" />
+                                </td>
+                                <td>Bí kíp viết CV ngành IT</td>
+                                <td>IT</td>
+                                <td class="ellipsis">Chia sẻ cách viết CV ấn tượng...</td>
+                                <td><span class="status private">Private</span></td>
+                                <td>
+                                    <select class="status-select">
+                                        <option>Private</option>
+                                        <option>Public</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <div class="actions">
+                                        <button class="btn btn-edit">Sửa</button>
+                                        <button class="btn btn-delete">Xóa</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody> -->
+                        <tbody id="articleTable"></tbody>
+                    </table>
+                </section>
+
+                <div class="pagination">
+                    <button class="page-btn prev">← Previous</button>
+
+                    <div class="pages">
+                        
+                    </div>
+
+                    <button class="page-btn next">Next →</button>
+                </div>
+            </main>
+        </div>
+    </div>
+    <script src="../js/check-admin.js"></script>
+    <script type="module" src="../js/article-manager.js"></script>
+</body>
+
+</html>

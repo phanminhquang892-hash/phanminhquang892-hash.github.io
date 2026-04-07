@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Add New Article</title>
+  <link rel="stylesheet" href="../css/add-new-article.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+    rel="stylesheet">
+</head>
+
+<body>
+  <div class="header">
+    <div class="logo">
+      <img src="../img/Chip.png" alt="">
+      <span>RIKKEI_EDU_BLOG</span>
+    </div>
+  </div>
+
+  <div class="page">
+
+    <div class="close-btn" title="Close">×</div>
+
+    <main class="form-wrap">
+      <h1 class="form-title">📝 Add New Article</h1>
+
+      <div class="field">
+        <label for="title">Title:</label>
+        <input id="title" type="text" />
+        <p class="error" id="errorTitle"></p>
+      </div>
+
+      <div class="field">
+        <label for="category">Article Categories:</label>
+        <select id="category"></select>
+        <p class="error" id="errorCategory"></p>
+      </div>
+
+      <div class="field">
+        <label for="mood">Mood:</label>
+        <select id="mood">
+          <option value="happy" selected>😀 Happy</option>
+          <option value="sad">😢 Sad</option>
+          <option value="angry">😠 Angry</option>
+          <option value="calm">😌 Calm</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="content">Content:</label>
+        <textarea id="content"></textarea>
+        <p class="error" id="errorContent"></p>
+      </div>
+
+      <div class="status-row">
+        <span class="status-label">Status</span>
+
+        <label class="radio-item">
+          <input type="radio" name="status" value="public" />
+          <span>public</span>
+        </label>
+
+        <label class="radio-item">
+          <input type="radio" name="status" value="private" />
+          <span>private</span>
+        </label>
+      </div>
+
+      <div class="upload-box">
+        <div class="upload-icon">
+          <img src="../img/Icon.png" alt="">
+        </div>
+        <div class="upload-text">
+          Browse and chose the files you want<br />
+          to upload from your computer
+        </div>
+
+        <!-- 👇 thêm dòng này -->
+        <div class="file-name" id="fileName"></div>
+      </div>
+
+      <button type="button" class="add-btn">Add</button>
+      <footer class="footer">
+        <div class="footer-container">
+
+          <div class="footer-col logo">
+            <h2>MY BLOG</h2>
+          </div>
+
+          <div class="footer-col">
+            <h4>About</h4>
+            <h5>Rareblocks</h5>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+              Nullam dictum aliquet accumsan porta lectus ridiculus in mattis.
+            </p>
+          </div>
+
+          <div class="footer-col">
+            <h4>Company</h4>
+            <ul>
+              <li>About</li>
+              <li>Features</li>
+              <li>Works</li>
+              <li>Career</li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <h4>Help</h4>
+            <ul>
+              <li>Customer Support</li>
+              <li>Delivery Details</li>
+              <li>Terms & Conditions</li>
+              <li>Privacy Policy</li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <h4>Resources</h4>
+            <ul>
+              <li>Free eBooks</li>
+              <li>Development Tutorial</li>
+              <li>How to - Blog</li>
+              <li>Youtube Playlist</li>
+            </ul>
+          </div>
+
+        </div>
+
+        <div class="footer-social">
+          <img src="../img/Social.png" alt="">
+        </div>
+      </footer>
+    </main>
+  </div>
+  <div id="toast" class="toast"></div>
+<script type="module" src="../js/add-new-article.js"></script>
+</body>
+
+</html>
