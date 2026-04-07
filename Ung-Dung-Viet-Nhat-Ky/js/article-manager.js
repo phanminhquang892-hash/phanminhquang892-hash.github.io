@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const modalCancel = document.getElementById("modalCancel");
     const modalOk = document.getElementById("modalOk");
 
-    // hàm mở modal dùng chung (chủ yếu dùng cho xác nhận Xóa)
+    // hàm mở modal dùng chung
     const openModal = ({ title, message, showInput = false, inputValue = "" }) => {
         return new Promise((resolve) => {
             modalTitle.innerText = title;
@@ -129,9 +129,38 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     };
 
-    // CHỈNH SỬA BÀI VIẾT: CHUYỂN HƯỚNG SANG TRANG THÊM/SỬA KÈM ID BÀI VIẾT
-    window.editArticle = (id) => {
-        window.location.href = `../html/add-new-article.html?editId=${id}`;
+    // chỉnh sửa bài viết
+    window.editArticle = async (id) => {
+        let article = articles.find(a => a.id === id);
+        if (!article) return;
+
+        const title = await openModal({
+            title: "Sửa bài viết",
+            message: "Nhập tiêu đề",
+            showInput: true,
+            inputValue: article.title
+        });
+        if (!title) return;
+
+        const content = await openModal({
+            title: "Sửa bài viết",
+            message: "Nhập nội dung",
+            showInput: true,
+            inputValue: article.content
+        });
+        if (!content) return;
+
+        try {
+            await updateDoc(doc(db, "articles", id), {
+                title: title,
+                content: content
+            });
+            article.title = title;
+            article.content = content;
+            render();
+        } catch (error) {
+            alert("Lỗi khi sửa!");
+        }
     };
 
     // thay đổi trạng thái
