@@ -129,38 +129,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     };
 
-    // chỉnh sửa bài viết
-    window.editArticle = async (id) => {
-        let article = articles.find(a => a.id === id);
-        if (!article) return;
-
-        const title = await openModal({
-            title: "Sửa bài viết",
-            message: "Nhập tiêu đề",
-            showInput: true,
-            inputValue: article.title
-        });
-        if (!title) return;
-
-        const content = await openModal({
-            title: "Sửa bài viết",
-            message: "Nhập nội dung",
-            showInput: true,
-            inputValue: article.content
-        });
-        if (!content) return;
-
-        try {
-            await updateDoc(doc(db, "articles", id), {
-                title: title,
-                content: content
-            });
-            article.title = title;
-            article.content = content;
-            render();
-        } catch (error) {
-            alert("Lỗi khi sửa!");
-        }
+    // chỉnh sửa bài viết (ĐÃ CHỈNH SỬA ĐỂ CHUYỂN HƯỚNG)
+    window.editArticle = (id) => {
+        window.location.href = `../html/add-new-article.html?editId=${id}`;
     };
 
     // thay đổi trạng thái
