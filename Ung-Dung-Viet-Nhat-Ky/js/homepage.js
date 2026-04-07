@@ -238,7 +238,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <img src="${a.image || '../img/Image.png'}" alt="Thumbnail" style="border-radius: 4px; object-fit: cover;"/>
                 <div class="post-meta">
                    <span>Date: ${new Date(a.createdAt).toISOString().split('T')[0]}</span>
-                   <span class="arrow">↗</span>
                 </div>
                 <h3>${a.title}</h3>
                 <p style="overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">${a.content}</p>
