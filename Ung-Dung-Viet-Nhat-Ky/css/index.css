@@ -1003,3 +1003,63 @@ a {
   }
   .tabs::-webkit-scrollbar { display: none; }
 }
+
+/* TỐI ƯU TRANG CHỦ & INDEX CHO ĐIỆN THOẠI NHỎ */
+@media (max-width: 576px) {
+  .header {
+    flex-direction: column;
+    align-items: center; /* Căn giữa các phần tử */
+    gap: 12px;
+  }
+  
+  .search-box {
+    width: 100%;
+    padding: 0;
+  }
+  
+  .auth-buttons, .user-menu {
+    width: 100%;
+    justify-content: center; /* Căn giữa avatar */
+    display: flex;
+  }
+  
+  .auth-buttons button { 
+    flex: 1; 
+  }
+
+  /* Fix lỗi Dropdown Menu bị tràn viền */
+  .dropdown {
+    width: 90vw; /* Chiếm 90% chiều rộng màn hình */
+    max-width: 320px;
+    right: auto;
+    left: 50%;
+    transform: translateX(-50%); /* Ép ra giữa màn hình */
+    top: 55px;
+    z-index: 1000;
+  }
+
+  .posts-grid {
+    grid-template-columns: 1fr !important; /* Bắt buộc 1 cột trên mobile */
+    gap: 20px;
+  }
+
+  .featured-post img, .post-card img {
+    height: 180px;
+    border-radius: 8px;
+  }
+
+  .small-post {
+    grid-template-columns: 1fr;
+  }
+  
+  .small-post img { height: 160px; }
+
+  /* Tab bar cuộn ngang không bị rớt dòng */
+  .tabs {
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-bottom: 5px;
+    scrollbar-width: none;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+}
