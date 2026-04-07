@@ -115,7 +115,7 @@ body {
   font-size: 14px;
   font-weight: 700;
 
-  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
   transition: 0.2s;
 }
 
@@ -131,7 +131,7 @@ body {
 
 /* ACTIVE */
 .menu-item.active {
-  outline: 2px solid rgba(255,255,255,0.5);
+  outline: 2px solid rgba(255, 255, 255, 0.5);
 }
 
 /* LOGOUT */
@@ -178,7 +178,7 @@ body {
   font-weight: 700;
   cursor: pointer;
 
-  box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
   transition: 0.2s;
 }
 
@@ -192,7 +192,7 @@ body {
   background: #fff;
   border-radius: 8px;
   border: 1px solid #eee;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
   overflow: hidden;
 }
 
@@ -211,13 +211,13 @@ body {
 }
 
 .article-table tbody tr {
-  height: 80px; 
+  height: 80px;
 }
 
 .article-table tbody td {
   padding: 16px;
   border-bottom: 1px solid #f0f0f0;
-  vertical-align: middle; 
+  vertical-align: middle;
 }
 
 
@@ -330,52 +330,52 @@ body {
 
 /* modal */
 .modal-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.4);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
 }
 
 .modal-overlay.show {
-    display: flex;
+  display: flex;
 }
 
 .modal-box {
-    width: 400px;
-    background: white;
-    padding: 20px;
-    border-radius: 12px;
+  width: 400px;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
 }
 
 .modal-input {
-    width: 100%;
-    padding: 8px;
-    margin: 10px 0;
-    display: none;
+  width: 100%;
+  padding: 8px;
+  margin: 10px 0;
+  display: none;
 }
 
 .modal-actions {
-    text-align: right;
+  text-align: right;
 }
 
 .modal-btn {
-    padding: 8px 14px;
-    margin-left: 10px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
+  padding: 8px 14px;
+  margin-left: 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
 }
 
 .ok-btn {
-    background: green;
-    color: white;
+  background: green;
+  color: white;
 }
 
 .cancel-btn {
-    background: #ccc;
+  background: #ccc;
 }
 
 /*  viền lựa chọn  */
@@ -528,9 +528,12 @@ body {
     gap: 10px;
     border-bottom: 1px solid #ddd;
     /* Ẩn thanh cuộn cho đẹp */
-    scrollbar-width: none; 
+    scrollbar-width: none;
   }
-  .sidebar::-webkit-scrollbar { display: none; }
+
+  .sidebar::-webkit-scrollbar {
+    display: none;
+  }
 
   .menu-item {
     width: auto;
@@ -556,32 +559,44 @@ body {
   }
 
   /* Biến Bảng thành dạng Thẻ (Card) */
-  table thead { display: none !important; }
-  table, table tbody, table tr, table td { display: block; width: 100%; }
-  
+  table thead {
+    display: none !important;
+  }
+
+  table,
+  table tbody,
+  table tr,
+  table td {
+    display: block;
+    width: 100%;
+  }
+
   table tr {
     margin-bottom: 15px;
     border: 1px solid #ddd;
     border-radius: 8px;
     padding: 10px;
     background: #fff;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
   }
-  
+
   table td {
     padding: 8px 0;
     border-bottom: 1px dashed #eee;
     text-align: left;
   }
-  
-  table td:last-child { border-bottom: none; }
 
-  .actions-cell, .actions {
+  table td:last-child {
+    border-bottom: none;
+  }
+
+  .actions-cell,
+  .actions {
     justify-content: flex-start;
     flex-wrap: wrap;
     gap: 10px;
   }
-  
+
   .pagination {
     flex-direction: column;
     gap: 15px;
@@ -603,13 +618,17 @@ body {
     white-space: nowrap;
     gap: 12px;
     border-bottom: 1px solid #ddd;
-    scrollbar-width: none; 
+    scrollbar-width: none;
   }
-  .sidebar::-webkit-scrollbar { display: none; }
+
+  .sidebar::-webkit-scrollbar {
+    display: none;
+  }
 
   .menu-item {
     width: auto;
-    min-width: max-content; /* Fix lỗi chữ và viền bị cắt */
+    min-width: max-content;
+    /* Fix lỗi chữ và viền bị cắt */
     height: 40px;
     margin-bottom: 0;
     padding: 0 16px;
@@ -629,7 +648,8 @@ body {
 
   .article-header h1 {
     font-size: 24px;
-    order: -1; /* Đưa tiêu đề lên trên nút bấm */
+    order: -1;
+    /* Đưa tiêu đề lên trên nút bấm */
   }
 
   .add-btn {
@@ -646,33 +666,40 @@ body {
     box-shadow: none;
   }
 
-  .article-table thead { display: none !important; }
-  .article-table, .article-table tbody, .article-table tr, .article-table td { 
-    display: block; 
-    width: 100%; 
+  .article-table thead {
+    display: none !important;
   }
-  
+
+  .article-table,
+  .article-table tbody,
+  .article-table tr,
+  .article-table td {
+    display: block;
+    width: 100%;
+  }
+
   .article-table tr {
-    margin-bottom: 20px; /* Tạo khoảng cách giữa các bài viết */
+    margin-bottom: 20px;
+    /* Tạo khoảng cách giữa các bài viết */
     border: 1px solid #e5e7eb;
     border-radius: 12px;
     padding: 16px;
     background: #fff;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
   }
-  
+
   .article-table td {
     padding: 8px 0;
     border-bottom: 1px solid #f0f0f0;
     text-align: left;
   }
-  
+
   .article-table td:first-child {
     padding-top: 0;
   }
 
-  .article-table td:last-child { 
-    border-bottom: none; 
+  .article-table td:last-child {
+    border-bottom: none;
     padding-bottom: 0;
   }
 
@@ -690,9 +717,10 @@ body {
     gap: 10px;
     margin-top: 5px;
   }
-  
+
   .btn {
-    flex: 1; /* Nút sửa/xóa chia đều 2 bên */
+    flex: 1;
+    /* Nút sửa/xóa chia đều 2 bên */
     text-align: center;
   }
 
@@ -707,7 +735,7 @@ body {
   .article-header h1 {
     font-size: 20px;
   }
-  
+
   .thumb {
     height: 150px;
   }
@@ -715,5 +743,51 @@ body {
   .modal-box {
     width: 90%;
     max-width: 350px;
+  }
+}
+
+/* =========================================
+   CSS XỬ LÝ RESPONSIVE CHO BẢNG TRÊN MOBILE 
+========================================= */
+@media screen and (max-width: 768px) {
+
+  /* 1. Biến bảng thành dạng có thể vuốt ngang */
+  #articleTable,
+  #articleTable pre,
+  /* Nếu bạn có bọc bảng trong container nào đó */
+  table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+    /* Tránh chữ bị ép xuống dòng lộn xộn */
+    -webkit-overflow-scrolling: touch;
+    /* Giúp vuốt mượt mà hơn trên iPhone */
+  }
+
+  /* 2. Khống chế lại kích thước ảnh minh họa (hiện tại ảnh của bạn đang bị phình to) */
+  #articleTable img.thumb {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+
+  /* 3. Rút ngắn cột nội dung bài viết để tiết kiệm diện tích vuốt */
+  #articleTable td.ellipsis {
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* 4. Định dạng lại cột chứa nút Sửa/Xóa cho ngay ngắn */
+  #articleTable td.actions {
+    min-width: 120px;
+  }
+
+  #articleTable td.actions .btn {
+    padding: 6px 10px;
+    font-size: 12px;
+    margin-right: 4px;
   }
 }
