@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#2f8f3a" />
+  <title>Smart AgriTech 18 WOW</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <div id="toastWrap" class="toast-wrap"></div>
+
+  <section id="authScreen" class="auth-screen">
+    <div class="snow-layer" id="snowLayer"></div>
+    <div class="auth-orb orb-1"></div>
+    <div class="auth-orb orb-2"></div>
+    <div class="auth-shell">
+      <div class="auth-brand-panel">
+        <div class="brand-badge"><span>🌿</span></div>
+        <p class="eyebrow">Smart AgriTech</p>
+        <h1>Nền tảng nông nghiệp thông minh 18 chức năng</h1>
+        <p>Quản lý trang trại, AI, IoT, QR, cộng đồng và phân quyền người dùng bằng giao diện web hiện đại.</p>
+        <div class="auth-highlights">
+          <span>AI chẩn đoán lá</span>
+          <span>Tưới IoT</span>
+          <span>QR nguồn gốc</span>
+          <span>Phân quyền Admin/User</span>
+        </div>
+      </div>
+
+      <div class="auth-card">
+        <div class="auth-tabs">
+          <button id="loginTab" class="auth-tab active" type="button">Đăng nhập</button>
+          <button id="registerTab" class="auth-tab" type="button">Đăng ký</button>
+        </div>
+
+        <form id="loginForm" class="auth-form active" novalidate>
+          <h2>Đăng nhập</h2>
+          <p class="muted">Nhập tên tài khoản hoặc email để vào hệ thống.</p>
+          <div class="field" data-field="loginIdentity">
+            <label for="loginIdentity">Tên tài khoản hoặc Email</label>
+            <input id="loginIdentity" name="loginIdentity" type="text" autocomplete="username" placeholder="Tên tài khoản hoặc Email" />
+            <small class="error"></small>
+          </div>
+          <div class="field password-field" data-field="loginPassword">
+            <label for="loginPassword">Mật khẩu</label>
+            <div class="input-action">
+              <input id="loginPassword" name="loginPassword" type="password" autocomplete="current-password" placeholder="Mật khẩu" />
+              <button class="eye-btn" type="button" data-toggle-password="loginPassword" aria-label="Hiện hoặc ẩn mật khẩu"></button>
+            </div>
+            <small class="error"></small>
+          </div>
+          <button class="primary-btn full" type="submit">Đăng nhập</button>
+          <button id="wipeAuthBtn" class="ghost-btn full" type="button">Xóa dữ liệu cũ nếu bị lỗi đăng nhập</button>
+        </form>
+
+        <form id="registerForm" class="auth-form" novalidate>
+          <h2>Đăng ký</h2>
+          <p id="firstAdminHint" class="muted">Tài khoản đầu tiên sẽ là Admin.</p>
+          <div class="field" data-field="regUsername">
+            <label for="regUsername">Tên tài khoản</label>
+            <input id="regUsername" name="regUsername" type="text" autocomplete="username" placeholder="Tên tài khoản" />
+            <small class="error"></small>
+          </div>
+          <div class="field" data-field="regEmail">
+            <label for="regEmail">Email</label>
+            <input id="regEmail" name="regEmail" type="email" autocomplete="email" placeholder="Email" />
+            <small class="error"></small>
+          </div>
+          <div class="field password-field" data-field="regPassword">
+            <label for="regPassword">Mật khẩu</label>
+            <div class="input-action">
+              <input id="regPassword" name="regPassword" type="password" autocomplete="new-password" placeholder="Mật khẩu" />
+              <button class="eye-btn" type="button" data-toggle-password="regPassword" aria-label="Hiện hoặc ẩn mật khẩu"></button>
+            </div>
+            <small class="error"></small>
+            <div class="strength"><span id="strengthBar"></span></div>
+            <p class="hint">Nên có chữ hoa, chữ thường, số và ký tự đặc biệt.</p>
+          </div>
+          <div class="field password-field" data-field="regConfirm">
+            <label for="regConfirm">Xác nhận mật khẩu</label>
+            <div class="input-action">
+              <input id="regConfirm" name="regConfirm" type="password" autocomplete="new-password" placeholder="Xác nhận mật khẩu" />
+              <button class="eye-btn" type="button" data-toggle-password="regConfirm" aria-label="Hiện hoặc ẩn mật khẩu"></button>
+            </div>
+            <small class="error"></small>
+          </div>
+          <button class="primary-btn full" type="submit">Đăng ký</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <main id="appShell" class="app-shell hidden">
+    <aside class="sidebar" id="sidebar">
+      <div class="side-brand">
+        <div class="logo">🌿</div>
+        <div>
+          <h2>AgriTech</h2>
+          <p>18 WOW Farm OS</p>
+        </div>
+      </div>
+      <nav id="sideNav" class="side-nav"></nav>
+      <div class="side-user">
+        <div id="userAvatar" class="avatar">A</div>
+        <div>
+          <strong id="sideUsername">Admin</strong>
+          <span id="sideRole">Quản trị viên</span>
+        </div>
+      </div>
+      <button id="logoutBtn" class="danger-btn full" type="button">Đăng xuất</button>
+    </aside>
+
+    <section class="content-shell">
+      <header class="topbar">
+        <button id="menuBtn" class="icon-btn mobile-only" type="button">☰</button>
+        <div>
+          <p id="topCrumb" class="eyebrow">Smart AgriTech</p>
+          <h1 id="pageTitle">Dashboard</h1>
+        </div>
+        <div class="top-actions">
+          <button id="cmdBtn" class="icon-btn list-btn" type="button" aria-label="Mở danh sách chức năng" title="Danh sách chức năng"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg></button>
+          <button id="themeBtn" class="icon-btn" type="button">🌙</button>
+        </div>
+      </header>
+      <section id="permissionBanner" class="permission-banner"></section>
+      <section id="viewRoot" class="view-root"></section>
+    </section>
+  </main>
+
+  <div id="modalRoot"></div>
+  <div id="cmdPalette" class="cmd-palette hidden">
+    <div class="cmd-card">
+      <div class="cmd-head">
+        <strong>Danh sách chức năng</strong>
+        <button class="icon-btn" id="closeCmd" type="button">×</button>
+      </div>
+      <input id="cmdSearch" type="text" placeholder="Tìm chức năng..." />
+      <div id="cmdList" class="cmd-list"></div>
+    </div>
+  </div>
+
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/store.js"></script>
+  <script src="assets/js/ui.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/modules.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
