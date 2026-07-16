@@ -1,46 +1,43 @@
-# Smart AgriTech 18 WOW Pro
+# Smart AgriTech
 
-Bản web app HTML/CSS/JavaScript thuần, giữ đúng 18 chức năng Smart AgriTech và mục Quản lý người dùng dành riêng cho Admin.
+Ứng dụng web quản lý nông trại với đúng 18 chức năng. Dự án dùng HTML, CSS và JavaScript thuần; không cần cài đặt thư viện để sử dụng.
 
-## Cách chạy
+## Mở ứng dụng
 
-1. Giải nén file zip.
-2. Mở `index.html` bằng trình duyệt.
-3. Bấm **Đăng ký** để tạo tài khoản đầu tiên. Tài khoản đầu tiên tự động là **Admin**.
-4. Admin vào **Quản lý người dùng** để tạo tài khoản User/Nông dân.
+Mở tệp `index.html` bằng trình duyệt. Tài khoản đầu tiên được tạo sẽ có quyền **Quản lý**; các tài khoản tạo sau có quyền **Nông hộ**.
 
-## Lưu ý quan trọng
+Thông tin được lưu trong `localStorage` của chính trình duyệt đang dùng. Khi đổi trình duyệt, xóa dữ liệu trang web hoặc chuyển sang máy khác, dữ liệu sẽ không tự đi theo.
 
-- Không có dữ liệu mẫu sẵn.
-- Tất cả dữ liệu do người dùng tự thêm sẽ lưu trong `localStorage` của trình duyệt.
-- Admin thấy và thao tác toàn bộ dữ liệu.
-- User/Nông dân chỉ thấy và thao tác dữ liệu thuộc tài khoản của mình.
-- Cộng đồng bắt đầu trống, mỗi tài khoản chỉ like một lần trên mỗi bài viết.
+## Quyền sử dụng
+
+- **Quản lý** xem được toàn bộ dữ liệu, tạo tài khoản, giao người phụ trách, đổi mật khẩu và tạm khóa tài khoản.
+- **Nông hộ** chỉ xem và chỉnh sửa dữ liệu thuộc tài khoản của mình.
+- Cảnh báo sâu bệnh và góc chia sẻ là dữ liệu chung; mọi nông hộ đều xem được nhưng chỉ người đăng hoặc người quản lý mới được sửa, xóa.
 
 ## 18 chức năng
 
-1. AI chẩn đoán bệnh cây từ ảnh chụp lá
-2. Hệ thống tưới thông minh IoT
-3. Quản lý trang trại thông minh Dashboard
-4. Truy xuất nguồn gốc nông sản bằng QR Code
-5. Quản lý từng cây bằng QR Code
-6. Dự đoán năng suất mùa vụ bằng AI
-7. AI cảnh báo nguy cơ mất mùa
-8. Theo dõi sức khỏe đất và đề xuất luân canh
-9. Trợ lý AI tư vấn canh tác
-10. Nhật ký canh tác điện tử
-11. Quản lý chi phí, doanh thu, lợi nhuận
-12. Theo dõi sinh trưởng cây qua ảnh định kỳ
-13. Cảnh báo sâu bệnh cộng đồng theo khu vực
-14. Bản đồ nguồn nước và cảnh báo hạn hán/ngập úng
-15. Quản lý nhà kính thông minh
-16. Quản lý nhiều khu vực trồng và phân quyền người dùng
-17. Dashboard trực quan IoT, biểu đồ, thống kê
-18. Nền tảng chia sẻ dữ liệu giữa các nông hộ
+1. Chẩn đoán bệnh lá
+2. Tưới thông minh
+3. Tổng quan nông trại
+4. Truy xuất nguồn gốc bằng QR
+5. Hồ sơ từng cây bằng QR
+6. Ước tính năng suất
+7. Cảnh báo rủi ro mùa vụ
+8. Sức khỏe đất và luân canh
+9. Hỏi đáp canh tác
+10. Nhật ký canh tác
+11. Thu chi mùa vụ
+12. Theo dõi sinh trưởng
+13. Cảnh báo sâu bệnh cộng đồng
+14. Bản đồ nguồn nước
+15. Quản lý nhà kính
+16. Khu vực và người phụ trách
+17. Biểu đồ và thống kê
+18. Góc chia sẻ nhà vườn
 
+## Ghi chú vận hành
 
-## Bản sửa mới
-- Sửa lỗi trang Quản lý người dùng báo `rows.join is not a function`.
-- Đổi nút `Ctrl K` thành icon danh sách chức năng.
-- Sau khi đăng ký, hệ thống chuyển về trang đăng nhập; người dùng phải đăng nhập mới vào hệ thống.
-- Dữ liệu vẫn bắt đầu trống, không có dữ liệu mẫu.
+- Mã QR được tạo ngay trong trình duyệt, có thể mở lớn và tải xuống.
+- Ảnh lá và ảnh sinh trưởng được thu nhỏ trước khi lưu để hạn chế đầy bộ nhớ trình duyệt.
+- Kết quả chẩn đoán, ước tính năng suất và hỏi đáp là hỗ trợ ban đầu dựa trên dữ liệu người dùng nhập; không thay thế kết luận của cán bộ nông nghiệp tại địa phương.
+- Trạng thái tưới và thiết bị nhà kính trong bản web là thông tin vận hành được ghi nhận tại ứng dụng; để điều khiển thiết bị vật lý cần kết nối thêm phần cứng và máy chủ phù hợp.

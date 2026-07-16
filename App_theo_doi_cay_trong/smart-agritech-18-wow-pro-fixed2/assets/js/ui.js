@@ -1,32 +1,271 @@
 const UI = (() => {
-  const $ = (sel, root=document) => root.querySelector(sel);
-  const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
-  const esc = (v='') => String(v ?? '').replace(/[&<>'"]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[m]));
-  const money = n => Number(n || 0).toLocaleString('vi-VN') + 'đ';
-  const date = v => v ? new Date(v).toLocaleDateString('vi-VN') : '—';
-  const toast = (title, msg='', type='success') => {
-    const wrap = $('#toastWrap'); const el = document.createElement('div'); el.className = `toast ${type}`; el.innerHTML = `<strong>${esc(title)}</strong>${msg?`<div class="muted">${esc(msg)}</div>`:''}`; wrap.appendChild(el); setTimeout(()=>el.remove(), 3300);
+  const $ = (selector, root = document) => root.querySelector(selector);
+  const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
+  const esc = (value = '') => String(value ?? '').replace(/[&<>'"]/g, char => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+  }[char]));
+  const icon = name => `<i data-lucide="${esc(name)}" aria-hidden="true"></i>`;
+
+  function icons(root = document) {
+    if (!window.lucide) return;
+    window.lucide.createIcons({ attrs: { 'stroke-width': 2 } });
+  }
+
+  const money = value => new Intl.NumberFormat('vi-VN', {
+    style: 'currency', currency: 'VND', maximumFractionDigits: 0
+  }).format(Number(value || 0));
+
+  const date = value => {
+    if (!value) return 'Chưa ghi';
+    const parsed = new Date(value);
+    return Number.isNaN(parsed.getTime()) ? 'Chưa ghi' : parsed.toLocaleDateString('vi-VN');
   };
-  const eyeIcon = (off=false) => off ? `<svg viewBox="0 0 24 24"><path d="M3 3l18 18"/><path d="M10.7 5.1A10.9 10.9 0 0 1 12 5c5 0 9 4.4 10 7- .4 1.1-1.3 2.5-2.6 3.7"/><path d="M6.5 6.8C4.3 8.2 2.8 10.4 2 12c1 2.6 5 7 10 7 1.7 0 3.2-.5 4.5-1.2"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>` : `<svg viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>`;
-  const bindEyes = (root=document) => $$('[data-toggle-password]', root).forEach(btn => { btn.innerHTML = eyeIcon(false); btn.onclick = () => { const input = document.getElementById(btn.dataset.togglePassword); if(!input) return; const show = input.type === 'password'; input.type = show ? 'text' : 'password'; btn.innerHTML = eyeIcon(show); }; });
-  const setFieldError = (field, message='') => { const box = document.querySelector(`[data-field="${field}"]`); if(!box) return; box.classList.toggle('invalid', !!message); const err = $('.error', box); if(err) err.textContent = message; };
-  const clearErrors = (root=document) => $$('.field', root).forEach(f => { f.classList.remove('invalid'); const e = $('.error', f); if(e) e.textContent=''; });
-  const required = (val) => String(val ?? '').trim().length > 0;
-  const emailOk = (val) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(val||'').trim());
-  const passwordScore = (pw) => { let s=0; if((pw||'').length>=8)s++; if(/[A-Z]/.test(pw))s++; if(/[a-z]/.test(pw))s++; if(/\d/.test(pw))s++; if(/[^A-Za-z0-9]/.test(pw))s++; return s; };
-  const strongPassword = pw => passwordScore(pw) >= 4;
-  const modal = (title, body, onSubmit) => {
-    const root = $('#modalRoot'); root.innerHTML = `<div class="modal-backdrop"><div class="modal"><div class="modal-head"><h2>${esc(title)}</h2><button class="icon-btn" data-close-modal type="button">×</button></div><form id="modalForm" novalidate>${body}<div class="toolbar"><button class="ghost-btn" data-close-modal type="button">Hủy</button><button class="primary-btn" type="submit">Lưu</button></div></form></div></div>`;
-    bindEyes(root); $$('[data-close-modal]', root).forEach(b => b.onclick = () => root.innerHTML='');
-    $('#modalForm').onsubmit = (e) => { e.preventDefault(); clearErrors(root); if(onSubmit(new FormData(e.currentTarget)) !== false){ root.innerHTML=''; } };
+
+  const dateTime = value => {
+    const parsed = new Date(value);
+    return Number.isNaN(parsed.getTime()) ? 'Chưa ghi' : parsed.toLocaleString('vi-VN');
   };
-  const confirm = (message, action) => { modal('Xác nhận', `<p class="muted">${esc(message)}</p>`, () => { action(); return true; }); };
-  const optionsUsers = (selected='') => Store.get().users.map(u => `<option value="${u.id}" ${selected===u.id?'selected':''}>${esc(u.username)} - ${CONFIG.roleLabels[u.role]}</option>`).join('');
-  const ownerName = (id) => Store.get().users.find(u => u.id === id)?.username || '—';
-  const imgPreview = (file, cb) => { if(!file){ cb(''); return; } const reader = new FileReader(); reader.onload = () => cb(reader.result); reader.readAsDataURL(file); };
-  const formInput = (name,label,value='',type='text',span=false,extra='') => `<div class="field ${span?'span-2':''}" data-field="${name}"><label>${esc(label)}</label><input name="${esc(name)}" type="${type}" value="${esc(value)}" placeholder="${esc(label)}" ${extra}/><small class="error"></small></div>`;
-  const formSelect = (name,label,options,value='',span=false) => `<div class="field ${span?'span-2':''}" data-field="${name}"><label>${esc(label)}</label><select name="${esc(name)}">${options.map(o=>`<option value="${esc(o.value)}" ${String(o.value)===String(value)?'selected':''}>${esc(o.label)}</option>`).join('')}</select><small class="error"></small></div>`;
-  const formText = (name,label,value='',span=true) => `<div class="field ${span?'span-2':''}" data-field="${name}"><label>${esc(label)}</label><textarea name="${esc(name)}" placeholder="${esc(label)}">${esc(value)}</textarea><small class="error"></small></div>`;
-  const empty = (text='Chưa có dữ liệu. Hãy thêm dữ liệu mới để bắt đầu.') => `<div class="empty"><h3>🌱 ${esc(text)}</h3><p class="muted">Hệ thống không có dữ liệu mẫu sẵn theo yêu cầu của bạn.</p></div>`;
-  return { $, $$, esc, money, date, toast, eyeIcon, bindEyes, setFieldError, clearErrors, required, emailOk, strongPassword, passwordScore, modal, confirm, optionsUsers, ownerName, imgPreview, formInput, formSelect, formText, empty };
+
+  function toast(title, message = '', type = 'success') {
+    const wrap = $('#toastWrap');
+    if (!wrap) return;
+    const el = document.createElement('div');
+    el.className = `toast ${type}`;
+    el.setAttribute('role', type === 'danger' ? 'alert' : 'status');
+    el.innerHTML = `<strong>${esc(title)}</strong>${message ? `<div class="muted">${esc(message)}</div>` : ''}`;
+    wrap.appendChild(el);
+    window.setTimeout(() => el.remove(), 3600);
+  }
+
+  const eyeIcon = showing => icon(showing ? 'eye-off' : 'eye');
+
+  function bindEyes(root = document) {
+    $$('[data-toggle-password]', root).forEach(button => {
+      button.innerHTML = eyeIcon(false);
+      button.onclick = () => {
+        const input = document.getElementById(button.dataset.togglePassword);
+        if (!input) return;
+        const showing = input.type === 'password';
+        input.type = showing ? 'text' : 'password';
+        button.innerHTML = eyeIcon(showing);
+        button.setAttribute('aria-label', showing ? 'Ẩn mật khẩu' : 'Hiện mật khẩu');
+        button.title = showing ? 'Ẩn mật khẩu' : 'Hiện mật khẩu';
+        icons(button);
+      };
+    });
+    icons(root);
+  }
+
+  function setFieldError(field, message = '', root = document) {
+    const box = root.querySelector(`[data-field="${field}"]`) || document.querySelector(`[data-field="${field}"]`);
+    if (!box) return;
+    box.classList.toggle('invalid', Boolean(message));
+    const error = $('.error', box);
+    if (error) error.textContent = message;
+  }
+
+  function clearErrors(root = document) {
+    $$('.field', root).forEach(field => {
+      field.classList.remove('invalid');
+      const error = $('.error', field);
+      if (error) error.textContent = '';
+    });
+  }
+
+  const required = value => String(value ?? '').trim().length > 0;
+  const emailOk = value => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value || '').trim());
+  const passwordScore = password => {
+    let score = 0;
+    if ((password || '').length >= 8) score += 1;
+    if (/[A-Z]/.test(password)) score += 1;
+    if (/[a-z]/.test(password)) score += 1;
+    if (/\d/.test(password)) score += 1;
+    if (/[^A-Za-z0-9]/.test(password)) score += 1;
+    return score;
+  };
+  const strongPassword = password => passwordScore(password) >= 4;
+  const numberBetween = (value, min, max) => Number.isFinite(Number(value)) && Number(value) >= min && Number(value) <= max;
+
+  function closeModal() {
+    const root = $('#modalRoot');
+    if (root) root.innerHTML = '';
+  }
+
+  function modal(title, body, onSubmit, options = {}) {
+    const root = $('#modalRoot');
+    const submitLabel = options.submitLabel || 'Lưu thay đổi';
+    const submitClass = options.submitClass || 'primary-btn';
+    root.innerHTML = `
+      <div class="modal-backdrop" data-modal-backdrop>
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+          <div class="modal-head">
+            <h2 id="modalTitle">${esc(title)}</h2>
+            <button class="icon-btn" data-close-modal type="button" aria-label="Đóng" title="Đóng">${icon('x')}</button>
+          </div>
+          <form id="modalForm" novalidate>
+            ${body}
+            <div class="toolbar">
+              <button class="secondary-btn" data-close-modal type="button">Bỏ qua</button>
+              <button class="${submitClass}" type="submit">${esc(submitLabel)}</button>
+            </div>
+          </form>
+        </div>
+      </div>`;
+    bindEyes(root);
+    $$('[data-close-modal]', root).forEach(button => { button.onclick = closeModal; });
+    $('[data-modal-backdrop]', root).onclick = event => { if (event.target === event.currentTarget) closeModal(); };
+    $('#modalForm', root).onsubmit = event => {
+      event.preventDefault();
+      clearErrors(root);
+      if (onSubmit(new FormData(event.currentTarget), root) !== false) closeModal();
+    };
+    const firstInput = $('input:not([type="hidden"]), select, textarea', root);
+    window.setTimeout(() => firstInput?.focus(), 0);
+  }
+
+  function dialog(title, body) {
+    const root = $('#modalRoot');
+    root.innerHTML = `
+      <div class="modal-backdrop" data-modal-backdrop>
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+          <div class="modal-head">
+            <h2 id="modalTitle">${esc(title)}</h2>
+            <button class="icon-btn" data-close-modal type="button" aria-label="Đóng" title="Đóng">${icon('x')}</button>
+          </div>
+          <div class="dialog-body">${body}</div>
+          <div class="toolbar dialog-actions"><button class="secondary-btn" data-close-modal type="button">Đóng</button></div>
+        </div>
+      </div>`;
+    $$('[data-close-modal]', root).forEach(button => { button.onclick = closeModal; });
+    $('[data-modal-backdrop]', root).onclick = event => { if (event.target === event.currentTarget) closeModal(); };
+    icons(root);
+  }
+
+  function confirm(message, action) {
+    modal('Xác nhận thao tác', `<p>${esc(message)}</p><p class="muted">Thao tác này không thể hoàn tác.</p>`, () => {
+      action();
+      return true;
+    }, { submitLabel: 'Xác nhận', submitClass: 'danger-btn' });
+  }
+
+  const optionsUsers = (selected = '') => Store.get().users
+    .map(user => `<option value="${esc(user.id)}" ${selected === user.id ? 'selected' : ''}>${esc(user.username)} - ${esc(CONFIG.roleLabels[user.role])}</option>`)
+    .join('');
+
+  const ownerName = id => Store.get().users.find(user => user.id === id)?.username || 'Tài khoản đã xóa';
+
+  function imgPreview(file, callback) {
+    if (!file || !file.size) { callback(''); return; }
+    if (!file.type.startsWith('image/')) {
+      toast('Không đọc được ảnh', 'Hãy chọn tệp JPG, PNG hoặc WebP.', 'danger');
+      callback('');
+      return;
+    }
+    if (file.size > 12 * 1024 * 1024) {
+      toast('Ảnh quá lớn', 'Hãy chọn ảnh nhỏ hơn 12 MB.', 'danger');
+      callback('');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onerror = () => { toast('Không đọc được ảnh', 'Bạn thử chọn lại ảnh khác nhé.', 'danger'); callback(''); };
+    reader.onload = () => {
+      const image = new Image();
+      image.onerror = () => { toast('Ảnh không hợp lệ', 'Bạn thử chọn lại ảnh khác nhé.', 'danger'); callback(''); };
+      image.onload = () => {
+        const maxSide = 1280;
+        const scale = Math.min(1, maxSide / Math.max(image.width, image.height));
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.max(1, Math.round(image.width * scale));
+        canvas.height = Math.max(1, Math.round(image.height * scale));
+        const context = canvas.getContext('2d');
+        context.fillStyle = '#ffffff';
+        context.fillRect(0, 0, canvas.width, canvas.height);
+        context.drawImage(image, 0, 0, canvas.width, canvas.height);
+        callback(canvas.toDataURL('image/jpeg', .82));
+      };
+      image.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  const formInput = (name, label, value = '', type = 'text', span = false, extra = '') => `
+    <div class="field ${span ? 'span-2' : ''}" data-field="${esc(name)}">
+      <label for="field-${esc(name)}">${esc(label)}</label>
+      <input id="field-${esc(name)}" name="${esc(name)}" type="${esc(type)}" value="${esc(value)}" placeholder="${esc(label)}" ${extra} />
+      <small class="error"></small>
+    </div>`;
+
+  const formSelect = (name, label, options, value = '', span = false) => `
+    <div class="field ${span ? 'span-2' : ''}" data-field="${esc(name)}">
+      <label for="field-${esc(name)}">${esc(label)}</label>
+      <select id="field-${esc(name)}" name="${esc(name)}">
+        ${options.map(option => `<option value="${esc(option.value)}" ${String(option.value) === String(value) ? 'selected' : ''}>${esc(option.label)}</option>`).join('')}
+      </select>
+      <small class="error"></small>
+    </div>`;
+
+  const formText = (name, label, value = '', span = true) => `
+    <div class="field ${span ? 'span-2' : ''}" data-field="${esc(name)}">
+      <label for="field-${esc(name)}">${esc(label)}</label>
+      <textarea id="field-${esc(name)}" name="${esc(name)}" placeholder="${esc(label)}">${esc(value)}</textarea>
+      <small class="error"></small>
+    </div>`;
+
+  const empty = (text = 'Chưa có thông tin ở mục này.') => `
+    <div class="empty">
+      ${icon('sprout')}
+      <h3>${esc(text)}</h3>
+      <p class="muted">Thêm bản ghi đầu tiên khi bạn sẵn sàng.</p>
+    </div>`;
+
+  function qrBox(payload, small = true, label = 'Mở mã QR') {
+    return `<button class="qr-box ${small ? 'small' : ''}" type="button" data-qr-value="${encodeURIComponent(payload)}" aria-label="${esc(label)}" title="${esc(label)}"></button>`;
+  }
+
+  function renderQRCodes(root = document) {
+    if (!window.QRCode) return;
+    $$('[data-qr-value]', root).forEach(box => {
+      const payload = decodeURIComponent(box.dataset.qrValue || '');
+      const size = box.classList.contains('small') ? 50 : 152;
+      box.innerHTML = '';
+      try {
+        new window.QRCode(box, {
+          text: payload,
+          width: size,
+          height: size,
+          colorDark: '#14261b',
+          colorLight: '#ffffff',
+          correctLevel: window.QRCode.CorrectLevel.M
+        });
+      } catch (error) {
+        console.error('Không thể tạo mã QR', error);
+        box.innerHTML = icon('qr-code');
+        box.title = 'Mã QR này có quá nhiều thông tin';
+        icons(box);
+      }
+    });
+  }
+
+  function downloadQr(box, fileName = 'ma-qr.png') {
+    const image = $('img', box);
+    const canvas = $('canvas', box);
+    const href = image?.src || canvas?.toDataURL('image/png');
+    if (!href) return toast('Chưa tạo được mã QR', 'Bạn thử mở lại mục này nhé.', 'danger');
+    const link = document.createElement('a');
+    link.href = href;
+    link.download = fileName.replace(/[^a-zA-Z0-9._-]/g, '-');
+    link.click();
+  }
+
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && $('#modalRoot')?.children.length) closeModal();
+  });
+
+  return {
+    $, $$, esc, icon, icons, money, date, dateTime, toast, eyeIcon, bindEyes,
+    setFieldError, clearErrors, required, emailOk, strongPassword, passwordScore,
+    numberBetween, modal, dialog, confirm, optionsUsers, ownerName, imgPreview,
+    formInput, formSelect, formText, empty, qrBox, renderQRCodes, downloadQr
+  };
 })();
